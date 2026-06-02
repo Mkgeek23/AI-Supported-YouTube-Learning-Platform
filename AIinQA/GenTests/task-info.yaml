@@ -41,7 +41,7 @@ files:
     visible: true
     placeholders:
       - offset: 5921
-        length: 13
+        length: 9
         placeholder_text: test_video_id
         initial_state:
           length: 13
@@ -49,8 +49,8 @@ files:
         initialized_from_dependency: false
         encrypted_possible_answer: eMtoanxeeorLX1AZu3xbdw==
         selected: false
-        status: Unchecked
-      - offset: 5985
+        status: Solved
+      - offset: 5981
         length: 13
         placeholder_text: test_video_id
         initial_state:
@@ -59,27 +59,27 @@ files:
         initialized_from_dependency: false
         encrypted_possible_answer: eMtoanxeeorLX1AZu3xbdw==
         selected: false
-        status: Unchecked
+        status: Solved
     learner_created: false
   - name: test_quizzes_junie.py
     visible: true
     placeholders:
-      - offset: 859
-        length: 53
+      - offset: 787
+        length: 288
         placeholder_text: "# TODO: AI agent doesn't clean the test database file"
         initial_state:
           length: 53
           offset: 859
         initialized_from_dependency: false
         encrypted_possible_answer: b5PuYPGIflcak2jJ2y1SITmEC8FhcHMBsjP94TgbHtoFAm6GINKDF/YrzHmoLA2phQ+RYgddK9Sqhf4LqUQxdDi+WdR7R2tXCdqm6Ym4TCSDdqcw96VNrCmhyXwO0WF3Jote4Y4ab1pKRP2Dr2UloFwF9K2vGVGv8jrj1vrYc/A=
-        selected: false
-        status: Unchecked
+        selected: true
+        status: Solved
     learner_created: false
   - name: test_main_junie.py
     visible: true
     placeholders:
-      - offset: 1523
-        length: 10
+      - offset: 1515
+        length: 5
         placeholder_text: start_time
         initial_state:
           length: 10
@@ -87,7 +87,7 @@ files:
         initialized_from_dependency: false
         encrypted_possible_answer: eaemN0JQQIRDSRIUmmXlhg==
         selected: false
-        status: Unchecked
+        status: Solved
     learner_created: false
   - name: test_integration_junie.py
     visible: true
@@ -95,7 +95,7 @@ files:
   - name: test_e2e_junie.py
     visible: true
     placeholders:
-      - offset: 4765
+      - offset: 4267
         length: 14
         placeholder_text: Test question?
         initial_state:
@@ -104,7 +104,10 @@ files:
         initialized_from_dependency: false
         encrypted_possible_answer: c77fioGPx6S2MSo/c8RjzjFAyJKcq6zPNsNubVk0HzdPzv2dfdKjbs2vKHcVTTXV
         selected: false
-        status: Unchecked
+        status: Solved
     learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Tue, 02 Jun 2026 10:05:37 UTC"
 record: -1

@@ -158,7 +158,7 @@ class QuizCache:
 
     def get_cached_quiz(self, video_id: str, module_title: str) -> Optional[List[Dict]]:
         """Retrieve cached quiz questions for a given topic and difficulty"""
-        conn = sqlite3.connect(QUIZ_CACHE_DB)
+        conn = sqlite3.connect(self.cache_path)
         cursor = conn.cursor()
         cursor.execute(
             'SELECT questions FROM module_questions WHERE video_id = ? AND module_title = ?',
@@ -174,7 +174,7 @@ class QuizCache:
     def save_quiz_to_cache(self, video_id: str, module_title: str,
                            difficulty: str, questions: List[Dict]):
         """Save generated quiz questions to cache"""
-        conn = sqlite3.connect(QUIZ_CACHE_DB)
+        conn = sqlite3.connect(self.cache_path)
         cursor = conn.cursor()
         cursor.execute('''
             INSERT OR REPLACE INTO module_questions 
@@ -245,17 +245,20 @@ class CourseDesignerAgent:
                 # Extract content from the response
                 content = response_dict['choices'][0]['message']['content']
 
-            logger.debug("Received response from LLM API")
-            logger.debug(f"Generated content: {content}")
+                logger.debug("Received response from LLM API")
+                logger.debug(f"Generated content: {content}")
 
-            # Extract JSON from a Markdown code block
-            json_block = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
+                # Extract JSON from a Markdown code block
+                json_block = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
 
-            # Extract the actual JSON string from the match object
-            if json_block:
-                questions = json.loads(json_block.group(1))
+                # Extract the actual JSON string from the match object
+                if json_block:
+                    questions = json.loads(json_block.group(1))
+                else:
+                    logger.debug("No JSON block found in the response")
+                    questions = [self._create_fallback_question(text)]
             else:
-                logger.debug("No JSON block found in the response")
+                logger.debug("No response from LLM API")
                 questions = [self._create_fallback_question(text)]
 
             logger.info(f"Successfully generated {len(questions)} questions")
@@ -263,7 +266,7 @@ class CourseDesignerAgent:
 
         except Exception as e:
             logger.debug(f"Error generating question: {e}")
-            return []
+            return [self._create_fallback_question(text)]
 
     def _create_fallback_question(self, text: str) -> Dict:
         return {
@@ -275,7 +278,7 @@ class CourseDesignerAgent:
 
 
 def get_quiz(video_id: str, module_title: str,
-             difficulty: str) -> list[dict] | None | Any:
+             difficulty: str, cache_path: str = QUIZ_CACHE_DB) -> list[dict] | None | Any:
     """
     Main function to generate quiz questions with caching
 
@@ -283,14 +286,14 @@ def get_quiz(video_id: str, module_title: str,
         video_id: The YouTube video ID
         module_title: The module title (e.g., "How To Use Jetbrains Academy Plugin For Homework Help")
         difficulty: Difficulty level (easy, medium, hard)
+        cache_path: Path to the quiz cache database
 
     Returns:
         List of dictionaries containing questions and answers
     """
 
     # Initialize cache
-    quiz_cache = QuizCache()
-    quiz_cache.init_table()
+    quiz_cache = QuizCache(cache_path)
 
     # Check cache first
     cached_questions = quiz_cache.get_cached_quiz(video_id, module_title)
@@ -299,7 +302,7 @@ def get_quiz(video_id: str, module_title: str,
         return cached_questions
 
     # Generate new questions if not in cache
-    quizzes = generate_all_module_quizzes(video_id, difficulty)
+    quizzes = generate_all_module_quizzes(video_id, difficulty, cache_path=cache_path)
 
     for quiz in quizzes:
         if quiz['module_title'] == module_title:
@@ -307,20 +310,21 @@ def get_quiz(video_id: str, module_title: str,
 
 
 def generate_all_module_quizzes(video_id: str,
-                                difficulty: str = "medium") -> list:
+                                difficulty: str = "medium",
+                                cache_path: str = QUIZ_CACHE_DB) -> list:
     """
     Generate quizzes for all modules associated with a video_id
 
     Args:
         video_id (str): The ID of the video to generate quizzes for
         difficulty (str): Difficulty level for the quiz questions (default: "medium")
+        cache_path (str): Path to the quiz cache database
 
     Returns:
         list: List of dictionaries containing module information and their respective quizzes
     """
     # Initialize quiz cache if needed
-    quiz_cache = QuizCache()
-    quiz_cache.init_table()
+    quiz_cache = QuizCache(cache_path)
 
     # Get all modules
     modules = get_cached_modules(video_id)

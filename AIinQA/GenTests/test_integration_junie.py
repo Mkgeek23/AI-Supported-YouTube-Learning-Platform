@@ -1,5 +1,6 @@
 import unittest
 import os
+import tempfile
 from unittest.mock import patch, MagicMock
 
 import sys
@@ -17,10 +18,11 @@ class TestModuleInteractions(unittest.TestCase):
     
     def setUp(self):
         """Set up test environment before each test."""
-        # Use in-memory databases for testing
-        self.transcriber_db_path = 'transcriptions.db'
-        self.modules_db_path = 'modules.db'
-        self.quizzes_db_path = 'quizzes.db'
+        # Create a temporary directory for test databases
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.transcriber_db_path = os.path.join(self.temp_dir.name, 'transcriptions.db')
+        self.modules_db_path = os.path.join(self.temp_dir.name, 'modules.db')
+        self.quizzes_db_path = os.path.join(self.temp_dir.name, 'quizzes.db')
         
         # Save original paths
         self.original_transcriber_path = transcriber.Transcriptions_CACHE_DB
@@ -39,17 +41,12 @@ class TestModuleInteractions(unittest.TestCase):
     
     def tearDown(self):
         """Clean up after each test."""
-        # Delete the test database files
-        if os.path.exists(self.transcriber_db_path):
-            os.remove(self.transcriber_db_path)
-        if os.path.exists(self.modules_db_path):
-            os.remove(self.modules_db_path)
-        if os.path.exists(self.quizzes_db_path):
-            os.remove(self.quizzes_db_path)
         # Restore original paths
         transcriber.Transcriptions_CACHE_DB = self.original_transcriber_path
         modules.MODULES_CACHE_DB = self.original_modules_path
         quizzes.QUIZ_CACHE_DB = self.original_quizzes_path
+        # Clean up temporary directory
+        self.temp_dir.cleanup()
     
     @patch('transcriber.whisper')
     @patch('transcriber.yt_dlp.YoutubeDL')
@@ -101,6 +98,9 @@ class TestModuleInteractions(unittest.TestCase):
     @patch('quizzes.CourseDesignerAgent')
     def test_modules_to_quizzes_pipeline(self, mock_agent_class, mock_get_cached_modules):
         """Test the pipeline from modules to quizzes."""
+        # Initialize the modules cache for this video_id
+        modules.init_course_cache()
+        
         # Mock get_cached_modules to return test modules
         modules_data = [
             {
@@ -111,6 +111,9 @@ class TestModuleInteractions(unittest.TestCase):
             }
         ]
         mock_get_cached_modules.return_value = modules_data
+        
+        # Seed the modules cache so quizzes.generate_all_module_quizzes doesn't fail
+        modules.save_modules_to_cache("test_vid_id", modules_data)
         
         # Mock CourseDesignerAgent to return test questions
         mock_agent = MagicMock()
@@ -126,9 +129,14 @@ class TestModuleInteractions(unittest.TestCase):
         ]
         mock_agent.generate_quiz_questions.return_value = questions
 
-        with pytest.raises(ValueError, match="No modules found in cache"):
-            # Call the generate_all_module_quizzes function
-            result = quizzes.generate_all_module_quizzes("test_vid_id", "medium")
+        # Call the generate_all_module_quizzes function
+        result = quizzes.generate_all_module_quizzes("test_vid_id", "medium", cache_path=self.quizzes_db_path)
+        
+        # Assert that the quizzes were created correctly
+        self.assertIsNotNone(result)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]['module_title'], 'Module 1')
+        self.assertEqual(result[0]['questions'], questions)
 
     @patch('transcriber.whisper')
     @patch('transcriber.yt_dlp.YoutubeDL')
@@ -180,7 +188,7 @@ class TestModuleInteractions(unittest.TestCase):
         
         # Step 3: Generate quizzes for the modules
         module_title = result_modules[0]['title']
-        result_quiz = quizzes.get_quiz("test_vid_id", module_title, "medium")
+        result_quiz = quizzes.get_quiz("test_vid_id", module_title, "medium", cache_path=self.quizzes_db_path)
         
         # Assert that the final quiz was created correctly
         self.assertIsNotNone(result_quiz)

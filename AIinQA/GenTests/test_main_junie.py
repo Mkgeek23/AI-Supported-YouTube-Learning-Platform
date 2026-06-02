@@ -24,7 +24,7 @@ class TestFlaskApplication(unittest.TestCase):
         
         # Assert that the response is successful
         self.assertEqual(response.status_code, 200)
-        
+
         # Assert that the response contains expected content
         self.assertIn(b'<!DOCTYPE html>', response.data)
         self.assertIn(b'<title>', response.data)
@@ -41,7 +41,7 @@ class TestFlaskApplication(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         
         # Check that the start time is included in the response
-        self.assertIn(b'start_time=30', response.data)
+        self.assertIn(b'start=30', response.data)
     
     @patch('main.transcribe_youtube_video')
     @patch('main.structure_transcript')
