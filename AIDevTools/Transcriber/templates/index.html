@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Video Transcriber</title>
+    <link href="../static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Transcriber</h1>
+
+        <div class="form-container">
+            <form id="videoForm">
+                <input type="text" id="videoUrl" placeholder="Paste YouTube URL here" required>
+                <input type="number" id="startTime" placeholder="Start time (seconds)" min="0">
+                <button type="submit">▶️ Play</button>
+            </form>
+        </div>
+
+        <p><strong>Current Link:</strong> <a href="" id="currentUrl" target="_blank">
+            -</a></p>
+
+        <div class="video-container">
+            <iframe
+                id="videoFrame"
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/{{ video_id }}?start={{ start_time }}&rel=0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div>
+            <button id="transcriptButton" disabled style="background-color: #666; cursor: not-allowed;">📝 Transcript</button>
+        </div>
+
+        <div class="transcript-container" id="transcriptContainer" style="display: none; margin-top: 20px;">
+            <h3>Transcript</h3>
+            <ul id="transcriptList">
+                <!-- Transcript will be dynamically inserted here -->
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="../static/js/main.js"></script>
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select the form element
+            const form = document.getElementById('videoForm');
+            const transcriptButton = document.getElementById('transcriptButton');
+            const transcriptContainer = document.getElementById('transcriptContainer');
+            const transcriptList = document.getElementById('transcriptList');
+            const iframe = document.getElementById('videoFrame');
+
+            // Add an event listener to the form
+            form.addEventListener('submit', (event) => {
+                // Prevent default form submission behavior (page reload)
+                event.preventDefault(); // Prevents page reload
+                update_info(event);     // Calls function defined in main.js
+
+                // Enable the Transcribe button and restore its standard appearance
+                transcriptButton.disabled = false;
+                transcriptButton.style.backgroundColor = '';
+                transcriptButton.style.cursor = '';
+            });
+
+            // Handle Transcript button click
+            transcriptButton.addEventListener('click', async () => {
+                if (transcriptContainer.style.display === 'none') {
+                    // Extract video_id from iframe src or current URL
+                    const iframeSrc = iframe.src;
+                    let videoId;
+
+                    // Try to get video_id from the iframe src
+                    const videoIdMatch = iframeSrc.match(/embed\/([^?&]+)/);
+                    videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+                    // Fallback: Try to get video_id from the current page URL
+                    if (!videoId) {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        videoId = urlParams.get('v');
+                    }
+
+                    // If video_id is still not found, display an alert and stop
+                    if (!videoId) {
+                        alert('Unable to determine the video ID');
+                        return;
+                    }
+
+                    // Fetch the transcript data by passing video_id as a query parameter
+                    const response = await fetch(`/transcription?video_id=${videoId}`);
+                    const data = await response.json();
+
+                    // Clear the previous transcript list
+                    transcriptList.innerHTML = '';
+
+                    // Populate the transcript list
+                    data.transcription.forEach(({ start, end, text }) => {
+                        const roundedStart = Math.round(start); // Round the start value to the nearest integer
+                        const listItem = document.createElement('li');
+                        const timestamp = document.createElement('button');
+
+                        // Timestamp button
+                        timestamp.innerText = `[${formatTime(roundedStart)}]`;
+                        timestamp.style.cursor = 'pointer';
+                        timestamp.style.marginRight = '10px';
+
+                        // Handle click to seek video
+                        timestamp.addEventListener('click', () => {
+                            // Update iframe to play video at the clicked timestamp
+                            iframe.src = `https://www.youtube.com/embed/${videoId}?start=${roundedStart}&rel=0&autoplay=1`;
+                        });
+
+                        // Add to the transcript list item
+                        listItem.appendChild(timestamp);
+                        listItem.appendChild(document.createTextNode(text));
+                        transcriptList.appendChild(listItem);
+                    });
+
+                    // Show the transcript container
+                    transcriptContainer.style.display = 'block';
+                } else {
+                    // Hide the transcript container
+                    transcriptContainer.style.display = 'none';
+                }
+            });
+
+            // Helper function to format time in MM:SS
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+        });
+    </script>
+</body>
+</html>

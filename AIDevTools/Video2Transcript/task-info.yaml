@@ -1,0 +1,46 @@
+type: edu
+files:
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 3410
+        length: 72
+        placeholder_text: "raise Exception('Not implemented') # TODO: get video_id from\
+      \ the info.id"
+        initial_state:
+          length: 72
+          offset: 3410
+        initialized_from_dependency: false
+        encrypted_possible_answer: Gy12qV3/w7YY+r3P+XRD1Wap6ZUKgyybp9e8NIeKzSZK1PLgKEgf7UpVjr+6JvJ1
+        selected: false
+        status: Unchecked
+      - offset: 4498
+        length: 92
+        placeholder_text: "raise Exception('Not implemented') # TODO: use the model to\
+      \ transcribe 'temp_audio.wav' file"
+        initial_state:
+          length: 92
+          offset: 4498
+        initialized_from_dependency: false
+        encrypted_possible_answer: MPKNcWltB+EJoJrjtYvAqwE3USw9W4suPKFKWU0L2gy0iDQj1vEE73bEd7E2KoBL+gSzrBP9x2lD3tXDSzuQeA==
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: ffmpeg_installation.md
+    visible: true
+    learner_created: false
+  - name: GenerateCode.png
+    visible: false
+    is_binary: true
+    learner_created: false
+status: Unchecked
+record: -1

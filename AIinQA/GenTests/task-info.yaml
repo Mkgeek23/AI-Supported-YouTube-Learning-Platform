@@ -1,0 +1,110 @@
+type: edu
+custom_name: Tests Generation
+files:
+  - name: main.py
+    visible: true
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: templates/index.html
+    visible: true
+    learner_created: false
+  - name: static/js/main.js
+    visible: true
+    learner_created: false
+  - name: static/css/styles.css
+    visible: true
+    learner_created: false
+  - name: transcriber.py
+    visible: true
+    learner_created: false
+  - name: modules.py
+    visible: true
+    learner_created: false
+  - name: quizzes.py
+    visible: true
+    learner_created: false
+  - name: docs/plan.md
+    visible: true
+    learner_created: false
+  - name: test_transcriber_junie.py
+    visible: true
+    learner_created: false
+  - name: test_modules_junie.py
+    visible: true
+    placeholders:
+      - offset: 5921
+        length: 13
+        placeholder_text: test_video_id
+        initial_state:
+          length: 13
+          offset: 5921
+        initialized_from_dependency: false
+        encrypted_possible_answer: eMtoanxeeorLX1AZu3xbdw==
+        selected: false
+        status: Unchecked
+      - offset: 5985
+        length: 13
+        placeholder_text: test_video_id
+        initial_state:
+          length: 13
+          offset: 5985
+        initialized_from_dependency: false
+        encrypted_possible_answer: eMtoanxeeorLX1AZu3xbdw==
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: test_quizzes_junie.py
+    visible: true
+    placeholders:
+      - offset: 859
+        length: 53
+        placeholder_text: "# TODO: AI agent doesn't clean the test database file"
+        initial_state:
+          length: 53
+          offset: 859
+        initialized_from_dependency: false
+        encrypted_possible_answer: b5PuYPGIflcak2jJ2y1SITmEC8FhcHMBsjP94TgbHtoFAm6GINKDF/YrzHmoLA2phQ+RYgddK9Sqhf4LqUQxdDi+WdR7R2tXCdqm6Ym4TCSDdqcw96VNrCmhyXwO0WF3Jote4Y4ab1pKRP2Dr2UloFwF9K2vGVGv8jrj1vrYc/A=
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: test_main_junie.py
+    visible: true
+    placeholders:
+      - offset: 1523
+        length: 10
+        placeholder_text: start_time
+        initial_state:
+          length: 10
+          offset: 1523
+        initialized_from_dependency: false
+        encrypted_possible_answer: eaemN0JQQIRDSRIUmmXlhg==
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: test_integration_junie.py
+    visible: true
+    learner_created: false
+  - name: test_e2e_junie.py
+    visible: true
+    placeholders:
+      - offset: 4765
+        length: 14
+        placeholder_text: Test question?
+        initial_state:
+          length: 14
+          offset: 4765
+        initialized_from_dependency: false
+        encrypted_possible_answer: c77fioGPx6S2MSo/c8RjzjFAyJKcq6zPNsNubVk0HzdPzv2dfdKjbs2vKHcVTTXV
+        selected: false
+        status: Unchecked
+    learner_created: false
+status: Unchecked
+record: -1

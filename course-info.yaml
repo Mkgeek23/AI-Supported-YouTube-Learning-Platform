@@ -1,0 +1,21 @@
+type: marketplace
+title: AI-Supported YouTube Learning Platform
+language: English
+summary: "Develop a web YouTube learning AI helper with transcripts, modules, and\
+  \ quizzes. Focus on how AI can streamline building features, generating educational\
+  \ content, and testing user flows."
+programming_language: Python
+environment: unittest
+content:
+  - Introduction
+  - PromptingTechniques
+  - AIDevTools
+  - AgentsForSoftwareDevelopment
+  - AIinQA
+  - AIinDevOps
+additional_files:
+  - name: LICENSE
+  - name: requirements.txt
+mode: Study
+feedback_link: https://plugins.jetbrains.com/plugin/27081-ai-supported-youtube-learning-platform/reviews
+yaml_version: 5

@@ -1,0 +1,129 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+.video-container {
+    width: 800px;
+    height: 450px;
+    margin: 20px 0;
+}
+.form-container {
+    margin: 20px 0;
+}
+input[type="text"], input[type="number"] {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+}
+button {
+    padding: 8px 15px;
+    background-color: deepskyblue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: lightskyblue;
+}
+.info-display {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 800px;
+}
+.info-display a {
+    color: #0066cc;
+    text-decoration: none;
+}
+.info-display a:hover {
+    text-decoration: underline;
+}
+.module-title {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+    border-radius: 4px;
+}
+
+.module-content {
+    margin-left: 20px;
+    display: none;
+}
+
+.module-item {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.module-item:hover {
+    background-color: #f8f8f8;
+}
+
+.processing-status {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.status-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 15px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.progress-container {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+.current-step {
+    margin: 10px 0;
+    color: #666;
+}
+
+.error-message {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #ffebee;
+    border-left: 5px solid #f44336;
+    border-radius: 4px;
+}
+
+.error-text {
+    color: #d32f2f;
+    margin: 0;
+}

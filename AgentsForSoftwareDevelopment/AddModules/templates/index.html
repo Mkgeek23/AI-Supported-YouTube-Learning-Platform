@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Video Transcriber</title>
+    <link href="../static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Transcriber</h1>
+
+        <div class="form-container">
+            <form id="videoForm">
+                <input type="text" id="videoUrl" placeholder="Paste YouTube URL here" required>
+                <input type="number" id="startTime" placeholder="Start time (seconds)" min="0">
+                <button type="submit">▶️ Play</button>
+            </form>
+        </div>
+
+        <div class="info-display" id="currentVideoInfo">
+            <p><strong>Current Link:</strong> <a href="#" id="currentUrl" target="_blank">-</a></p>
+        </div>
+
+        <div class="video-container">
+            <iframe
+                id="videoFrame"
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/{{ video_id }}?start={{ start_time }}&rel=0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div>
+            <button id="modulesButton" disabled style="background-color: #666; cursor: not-allowed;">📚 To modules</button>
+        </div>
+
+        <div class="processing-status" id="processingStatus" style="display: none;">
+            <div class="status-container">
+                <div class="spinner"></div>
+                <h3>Processing Status</h3>
+                <div id="currentStep" class="current-step">Initializing...</div>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <p class="error-text"></p>
+        </div>
+
+
+        <div class="modules-container" id="modulesContainer" style="display: none; margin-top: 20px;">
+            <h3>Modules</h3>
+            <div id="modulesList">
+                <!-- AgentsForSoftwareDevelopment will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/js/main.js"></script>
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select the form element
+            const form = document.getElementById('videoForm');
+            const iframe = document.getElementById('videoFrame');
+
+            const modulesButton = document.getElementById('modulesButton');
+            const modulesContainer = document.getElementById('modulesContainer');
+            const modulesList = document.getElementById('modulesList');
+
+            // Add an event listener to the form
+            form.addEventListener('submit', (event) => {
+                // Prevent default form submission behavior (page reload)
+                event.preventDefault(); // Prevents page reload
+                update_info(event);     // Calls function defined in main.js
+
+                // Enable the Modules button and restore its standard appearance
+                modulesButton.disabled = false;
+                modulesButton.style.backgroundColor = '';
+                modulesButton.style.cursor = '';
+            });
+
+            modulesButton.addEventListener('click', async () => {
+                const processingStatus = document.getElementById('processingStatus');
+                const currentStep = document.getElementById('currentStep');
+                const progressBar = document.getElementById('progressBar');
+                const errorMessage = document.getElementById('errorMessage');
+
+                try {
+                    // Reset displays
+                    errorMessage.style.display = 'none';
+                    processingStatus.style.display = 'block';
+                    modulesContainer.style.display = 'none';
+                    modulesList.innerHTML = '';
+
+                    const iframeSrc = iframe.src;
+                    let videoId = iframeSrc.match(/embed\/([^?&]+)/)?.[1] ||
+                        new URLSearchParams(window.location.search).get('v');
+
+                    if (!videoId) {
+                        throw new Error('Unable to determine the video ID');
+                    }
+
+                    // Update status and progress for each step
+                    const updateStatus = (step, progress) => {
+                        currentStep.textContent = step;
+                        progressBar.style.width = `${progress}%`;
+                    };
+
+                    // Start processing
+                    updateStatus('Downloading video audio...', 20);
+
+                    const response = await fetch(`/modules?video_id=${videoId}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to process video');
+                    }
+
+                    updateStatus('Generating modules...', 60);
+
+                    const data = await response.json();
+
+                    updateStatus('Displaying results...', 100);
+
+                    // Display modules
+                    data.modules.forEach(section => {
+                        if (section.title) {
+                            const moduleDiv = document.createElement('div');
+                            moduleDiv.className = 'module';
+
+                            const titleDiv = document.createElement('div');
+                            titleDiv.className = 'module-title';
+                            titleDiv.innerHTML = `▶ ${section.title}`;
+
+                            const contentDiv = document.createElement('div');
+                            contentDiv.className = 'module-content';
+                            contentDiv.style.display = 'none';
+
+                            section.content.forEach(item => {
+                                const itemDiv = document.createElement('div');
+                                itemDiv.className = 'module-item';
+                                const timestamp = Math.round(item.start);
+                                itemDiv.innerHTML = `[${formatTime(timestamp)}] ${item.text}`;
+
+                                itemDiv.addEventListener('click', () => {
+                                    iframe.src = `https://www.youtube.com/embed/${videoId}?start=${timestamp}&rel=0&autoplay=1`;
+                                });
+
+                                contentDiv.appendChild(itemDiv);
+                            });
+
+                            titleDiv.addEventListener('click', () => {
+                                titleDiv.innerHTML = titleDiv.innerHTML.startsWith('▶') ?
+                                    titleDiv.innerHTML.replace('▶', '▼') :
+                                    titleDiv.innerHTML.replace('▼', '▶');
+                                contentDiv.style.display = contentDiv.style.display === 'none' ? 'block' : 'none';
+                            });
+
+                            moduleDiv.appendChild(titleDiv);
+                            moduleDiv.appendChild(contentDiv);
+                            modulesList.appendChild(moduleDiv);
+                        }
+                    });
+
+                    // Show results
+                    setTimeout(() => {
+                        processingStatus.style.display = 'none';
+                        modulesContainer.style.display = 'block';
+                    }, 1000);
+
+                } catch (error) {
+                    // Handle errors
+                    errorMessage.style.display = 'block';
+                    errorMessage.querySelector('.error-text').textContent =
+                        `Error: ${error.message}. Please try again.`;
+                    processingStatus.style.display = 'none';
+                }
+            });
+
+            // Helper function to format time in MM:SS
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+        });
+    </script>
+</body>
+</html>

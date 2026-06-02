@@ -1,0 +1,46 @@
+type: edu
+files:
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 384
+        length: 51
+        placeholder_text: "None # TODO: call transcribe_youtube_video function"
+        initial_state:
+          length: 51
+          offset: 384
+        initialized_from_dependency: false
+        encrypted_possible_answer: 74ZlazzcHRQUXNHJ0tJvMy0hLUpIBllDvaL+Wo9gchtTsHm2EziLHeD1OECTIw8d21Vp53Wa+8IGVofZmY4ejomRAKRY384QoEVtkKaBGHY=
+        selected: false
+        status: Unchecked
+      - offset: 569
+        length: 49
+        placeholder_text: "None # TODO: get transcript value for the webpage"
+        initial_state:
+          length: 49
+          offset: 569
+        initialized_from_dependency: false
+        encrypted_possible_answer: COzpsFJuDf9miOi26pVnEympK6/cEr7I7i7lgYB0AnAQq/nOdJYX9GNVW6D+nxSU
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: templates/index.html
+    visible: true
+    learner_created: false
+  - name: static/js/main.js
+    visible: true
+    learner_created: false
+  - name: static/css/styles.css
+    visible: true
+    learner_created: false
+status: Unchecked
+record: -1

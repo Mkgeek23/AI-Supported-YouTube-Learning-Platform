@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Learning Platform</title>
+    <link href="../static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Learning Platform</h1>
+
+        <div class="form-container">
+            <form id="videoForm">
+                <input type="text" id="videoUrl" placeholder="Paste YouTube URL here" required>
+                <input type="number" id="startTime" placeholder="Start time (seconds)" min="0">
+                <button type="submit">▶️ Play</button>
+            </form>
+        </div>
+
+        <div class="info-display" id="currentVideoInfo">
+            <p><strong>Current Link:</strong> <a href="#" id="currentUrl" target="_blank">-</a></p>
+        </div>
+
+        <div class="video-container">
+            <iframe
+                id="videoFrame"
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/{{ video_id }}?start={{ start_time }}&rel=0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div>
+            <button id="modulesButton" disabled style="background-color: #666; cursor: not-allowed;">📚 To modules</button>
+        </div>
+
+        <div class="processing-status" id="processingStatus" style="display: none;">
+            <div class="status-container">
+                <div class="spinner"></div>
+                <h3>Processing Status</h3>
+                <div id="currentStep" class="current-step">Initializing...</div>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <p class="error-text"></p>
+        </div>
+
+
+        <div class="modules-container" id="modulesContainer" style="display: none; margin-top: 20px;">
+            <h3>Modules</h3>
+            <div class="modules-grid">
+                <div id="modulesList" class="modules-column">
+                    <!-- Modules will be dynamically inserted here -->
+                </div>
+                <div id="quizColumn" class="quiz-column">
+                    <div class="quiz-placeholder">
+                        <h3>Quiz Section</h3>
+                        <p>Click the Quiz button next to any module to generate and display its quiz here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/js/main.js"></script>
+    <script>
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select the form element
+            const form = document.getElementById('videoForm');
+            const iframe = document.getElementById('videoFrame');
+
+            const modulesButton = document.getElementById('modulesButton');
+            const modulesContainer = document.getElementById('modulesContainer');
+            const modulesList = document.getElementById('modulesList');
+
+            // Add an event listener to the form
+            form.addEventListener('submit', (event) => {
+                // Prevent default form submission behavior (page reload)
+                event.preventDefault(); // Prevents page reload
+                update_info(event);     // Calls function defined in main.js
+
+                // Enable the Modules button and restore its standard appearance
+                modulesButton.disabled = false;
+                modulesButton.style.backgroundColor = '';
+                modulesButton.style.cursor = '';
+            });
+
+            modulesButton.addEventListener('click', async () => {
+                const processingStatus = document.getElementById('processingStatus');
+                const currentStep = document.getElementById('currentStep');
+                const progressBar = document.getElementById('progressBar');
+                const errorMessage = document.getElementById('errorMessage');
+
+                try {
+                    // Reset displays
+                    errorMessage.style.display = 'none';
+                    processingStatus.style.display = 'block';
+                    modulesContainer.style.display = 'none';
+                    modulesList.innerHTML = '';
+
+                    if (!currentVideoId) {
+                        throw new Error('Please load a video first');
+                    }
+                    const videoId = currentVideoId;
+
+                    // Update status and progress for each step
+                    const updateStatus = (step, progress) => {
+                        currentStep.textContent = step;
+                        progressBar.style.width = `${progress}%`;
+                    };
+
+                    // Start processing
+                    updateStatus('Downloading video audio...', 20);
+
+                    const response = await fetch(`/modules?video_id=${videoId}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to process video');
+                    }
+
+                    updateStatus('Generating modules...', 60);
+
+                    const data = await response.json();
+
+                    updateStatus('Displaying results...', 100);
+
+                    // Display modules
+                    data.modules.forEach((section, index) => {
+                        if (section.title) {
+                            // Ensure each section has a unique ID
+                            section.id = index;
+                            const moduleDiv = document.createElement('div');
+                            moduleDiv.className = 'module';
+
+                            const titleDiv = document.createElement('div');
+                            titleDiv.className = 'module-title';
+
+                            const titleText = document.createElement('span');
+                            titleText.innerHTML = `▶ ${section.title}`;
+                            const sectionId = section.id; // Capture the ID in a new variable
+                            const sectionTitle = section.title; // Capture the title in a new variable
+                            titleText.onclick = (e) => {
+                                const contentId = `content_${sectionId}`;
+                                const content = document.getElementById(contentId);
+                                const arrow = titleText.innerHTML.includes('▶') ? '▼' : '▶';
+                                titleText.innerHTML = `${arrow} ${sectionTitle}`;
+                                if (content) {
+                                    // Force the display style to be either 'none' or 'block'
+                                    const currentDisplay = window.getComputedStyle(content).display;
+                                    content.style.display = (currentDisplay === 'none' || currentDisplay === '') ? 'block' : 'none';
+                                } else {
+                                    console.error(`Content element not found: ${contentId}`);
+                                }
+                            };
+                            titleDiv.appendChild(titleText);
+
+                            const quizButton = document.createElement('button');
+                            quizButton.className = 'quiz-button';
+                            quizButton.innerHTML = '📝 Quiz';
+                            quizButton.onclick = (e) => {
+                                e.stopPropagation();
+                                generateQuiz(section.title);
+                            };
+                            titleDiv.appendChild(quizButton);
+
+                            const contentDiv = document.createElement('div');
+                            contentDiv.className = 'module-content';
+                            contentDiv.id = `content_${section.id}`;
+                            contentDiv.style.display = 'none';
+                            console.log(`Created content div with id: ${contentDiv.id}`);
+
+                            section.content.forEach(item => {
+                                const itemDiv = document.createElement('div');
+                                itemDiv.className = 'module-item';
+                                const timestamp = Math.round(item.start);
+                                itemDiv.innerHTML = `[${formatTime(timestamp)}] ${item.text}`;
+
+                                itemDiv.addEventListener('click', () => {
+                                    iframe.src = `https://www.youtube.com/embed/${videoId}?start=${timestamp}&rel=0&autoplay=1`;
+                                });
+
+                                contentDiv.appendChild(itemDiv);
+                            });
+
+                            moduleDiv.appendChild(titleDiv);
+                            moduleDiv.appendChild(contentDiv);
+                            modulesList.appendChild(moduleDiv);
+                        }
+                    });
+
+                    // Show results
+                    setTimeout(() => {
+                        processingStatus.style.display = 'none';
+                        modulesContainer.style.display = 'block';
+                    }, 1000);
+
+                } catch (error) {
+                    // Handle errors
+                    errorMessage.style.display = 'block';
+                    errorMessage.querySelector('.error-text').textContent =
+                        `Error: ${error.message}. Please try again.`;
+                    processingStatus.style.display = 'none';
+                }
+            });
+
+            // Helper function to format time in MM:SS
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+        });
+    </script>
+</body>
+</html>

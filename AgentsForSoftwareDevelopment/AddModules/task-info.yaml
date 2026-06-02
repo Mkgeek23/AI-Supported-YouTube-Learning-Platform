@@ -1,0 +1,37 @@
+type: edu
+custom_name: Add Modules
+files:
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 631
+        length: 47
+        placeholder_text: "None # TODO: call structure_transcript function"
+        initial_state:
+          length: 47
+          offset: 631
+        initialized_from_dependency: false
+        encrypted_possible_answer: rKtfdPXgR5+xP9ZrA9qvJvR5fjsAXPtjn8sjX0uDA455DcHB20XlKn+x2NGONjX0
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: templates/index.html
+    visible: true
+    learner_created: false
+  - name: static/css/styles.css
+    visible: true
+    learner_created: false
+  - name: static/js/main.js
+    visible: true
+    learner_created: false
+status: Unchecked
+record: -1

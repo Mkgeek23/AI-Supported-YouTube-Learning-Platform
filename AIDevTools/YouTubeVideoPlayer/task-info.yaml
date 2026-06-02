@@ -1,0 +1,81 @@
+type: edu
+custom_name: YouTube Video Player
+files:
+  - name: main.py
+    visible: true
+    placeholders:
+      - offset: 211
+        length: 13
+        placeholder_text: '"UEtBMyzLBFY"'
+        initial_state:
+          length: 13
+          offset: 211
+        initialized_from_dependency: false
+        encrypted_possible_answer: 90mPB7O7E1vmG7LKtI0bjQ==
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: templates/index.html
+    visible: true
+    placeholders:
+      - offset: 92
+        length: 53
+        placeholder_text: "<!-- TODO: generate nice styles with AI Assistant -->"
+        initial_state:
+          length: 53
+          offset: 92
+        initialized_from_dependency: false
+        encrypted_possible_answer: J6wbc0nda/fvgI2/bds+ESupQs+nkLyUoNaJTWke2naoUJfGTg5x36cauwAD8H/HTOYTph4ZnLcC60WCnGM9CB0LcYpuBvXZZ82NxKBotGWlTRPDqaUIVk5E/8XTn0aJVkcwoG4hPh/41qnm1rTYT/36ktjEr7rrytLGE95kfrVLxN6VNWpjRP025vzvb5V+2cInsmGXc3/HgnD4RdVSytcQuYQP0jcYV7fO3TV1PtntdkyAW6zmRgr7m2jY0iGJ7FGy1iVocaQBJ78pyo1hlvhZkR6l+zstEjIVH1kOI9Kla6zgpwoGn9R7yIb700Y3o1vMkaZCVqrp+IKRhMBmnW5TB5Xe7CWIcBG6gF9ESSWOA5q1xc0MTI2GOaYxbeHv+zklCO4T6efVceyON1KkcH6fxcUSKUFRgk9JDv5w63zhJwkxUkQ1/R2WOrfpfb3dGsD9JUBECv+yavi/h/2IdpVr6eUIXEIUICoMepEnq2DVPUpDXJAiBHeN8HKkZes7lsbCM0uU2Y8Kb8qVqhCLwHFgxQwO7FVmmuf+BfXM2wXilJ5ebkypigm2c4LwJA1fnnujaNHxp+5BPGcEM9dWJcjj9Vr1BrFyGVvEqMPVr4J/5tLWDcOPnMCrw7yxd8n5MrYv+8UKb4OzFDFRzii5PZT2nGTVo+hXrC9mAdX4nzVOVeVFfxOYdVXx0aC8hYnDuZ5CrI43xsQcEYqI4CDndHIkw6bC4EBC5ttYY6v3YwTe4aLVRJt6QBDrtLbjWzORkqyFu+GtQ9Mc+EyaEOV6MBypCVUXdQssdAPKeiucsylUBX0GHJHNzjC3QEFI63mEUB+sOLVic4tiaovSFc713YotlJR35rOmQWuP+Fv12Q2LyNFBSSHUr07kTn4h72eE5+GP350wGXE3g6yzSpuBOx+qE71kUnybOqYjHMt5TkJWgNdK4+3GGThzQyNhJS5mziqiRPtL/FOvBTaxMSXJkHZATugmVgcbsBA8aqVpkq/sZ5V8973wTFNEPl5w744IJHo5pO0sBosLK8Kkhdikq+PK6lcgx6k1fwRwhI08IZM/4g86NVVscsaySuluqaqQwZmEd6SGUWmdkK1KD3YVARd5Eoo6OKoB8zTgS2YtlR+FPF9Gm0mVBZCVuPHzi0XUVq+1nxH4rliV6EeO6nRD4PEI5Irmj5U8f+ikrus2Xeu5/ZrrXMog+aW3LCu5kYzbmmUtr/vDJFpR6eA9GCiVgceoufOP8a0irqe+ULi83imqM7U8uR0zAEaG4yY7x3C6terUpOc8ndf0p2ox+2d3HvZjEEICxpsPogzL2CngTi0kdn4DGyO5jQ8Q4Q+fydb55TsFEVfml+R1Z+ztEP57Xwl838sihPmqT+yDUdcjwTUaeegO5WqzB8mdQOEKoHiKDblNRz/bA5MvXkChxvYi6ICmC86QDT/462saxu1xvm6rLpCOU2MY1KFENUgWcfGmCyMe7y4T8Unn2sohatC9q9m6UidhG3Q3p6kWj/RIQeZV8Z7ZAFwv9X6Ys45nq7JTl+W6nGrkWvzKwx3mJFMRQDi9mMfKSQzuyPEbhDlYuRXq5duzGkwWgSA54HCRNGhG5CW10HgliEnqIsUkT3GgUQ==
+        selected: false
+        status: Unchecked
+      - offset: 765
+        length: 43
+        placeholder_text: https://www.youtube.com/watch?v=UEtBMyzLBFY
+        initial_state:
+          length: 43
+          offset: 765
+        initialized_from_dependency: false
+        encrypted_possible_answer: ikj+WDmP+bWsyDt5S6SS8M1xPiN88aa6eG0ahGc+kEtVl0MEksKUSk/n53nHQWWD
+        selected: false
+        status: Unchecked
+      - offset: 859
+        length: 43
+        placeholder_text: https://www.youtube.com/watch?v=UEtBMyzLBFY
+        initial_state:
+          length: 43
+          offset: 859
+        initialized_from_dependency: false
+        encrypted_possible_answer: ikj+WDmP+bWsyDt5S6SS8M1xPiN88aa6eG0ahGc+kEtVl0MEksKUSk/n53nHQWWD
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: FlaskServer.png
+    visible: false
+    is_binary: true
+    learner_created: false
+  - name: EnableSmartApply.md
+    visible: true
+    learner_created: false
+  - name: registry.png
+    visible: false
+    is_binary: true
+    learner_created: false
+  - name: SmartApplyEnabling.png
+    visible: false
+    is_binary: true
+    learner_created: false
+  - name: SmartApply.png
+    visible: false
+    is_binary: true
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+status: Unchecked
+record: -1

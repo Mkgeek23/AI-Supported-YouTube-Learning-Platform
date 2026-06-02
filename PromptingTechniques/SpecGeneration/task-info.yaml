@@ -1,0 +1,73 @@
+type: edu
+custom_name: Spec Generation
+files:
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 787
+        length: 46
+        placeholder_text: "None, # TODO: put value according to the lesson"
+        initial_state:
+          length: 47
+          offset: 793
+        initialized_from_dependency: false
+        encrypted_possible_answer: WUjt1X08vxkKik82hiRp2w==
+        selected: false
+        status: Solved
+      - offset: 852
+        length: 46
+        placeholder_text: "None, # TODO: put value according to the lesson"
+        initial_state:
+          length: 47
+          offset: 859
+        initialized_from_dependency: false
+        encrypted_possible_answer: Mq2Ug1dg4qE7XVQdzuBI/Q==
+        selected: false
+        status: Solved
+      - offset: 1282
+        length: 58
+        placeholder_text: "\"meta-llama/Llama-3.2-1B-Instruct\" # TODO: try different\
+      \ models"
+        initial_state:
+          length: 63
+          offset: 1290
+        initialized_from_dependency: false
+        encrypted_possible_answer: XY0pTZ/dKHZzwb8FqrPbgCYn0zOearrInxrT1Da0+ZI3cavI9PVbkfvAST9Seu15
+        selected: true
+        status: Solved
+      - offset: 1354
+        length: 219
+        placeholder_text: "\"Create some specification for Learning Platform\" # TODO:\
+      \ try to change the prompt (use triple quotes \"\"\" for multi-line text)"
+        initial_state:
+          length: 126
+          offset: 1367
+        initialized_from_dependency: false
+        encrypted_possible_answer: 8DxbbZdiFKVKCzUwO1tuLL2EEq2Cn7MFDvg4LyIVk7St3o/KyN5xA60UVJwGRa3iNPtXzWQeZeoOxyNkuS/DJmVWB2ucEYn/1T1lvbQi+jTSuDq18k16I4Hp46FS+Zab3HxtFegB/yNXqvYDIInSDS0fwS8oDiod9pUyQjejLcWqoGkBzcn72xQWgJtrjeMZ7nU1Yw00Zyh2NZ/8dQ7N7LRyIwxrkDlwfVgbGuEQJqCVzGQ/Sr24qu9V+IQNyXH59j/vSdG0xbzdlPhKmpnUyVSQMeZ7tua/OXguV+rJfZdxalCMQf9185Us9GfZ2CSm3cbe5C+/HTo6Uq4UMCk2UrNUqPq0DlmkICcOSROn5fwQrhe5P5MgqSkYbgiUYZelSXQvUrOZTD81R75bQFdHn0pR+qua/1c9fxPx2pqEB8ueitYv9PsQAGpV0yfpIUYe8Rz10CiEaQ3R5pBfuq0X9Fo7mBJE/RUWyyd6f2Q3jt5pZx1NgvA33fywyJ9lvWQky92tAQomPtAQwNB4C4Kuqv0e3Z9id+cbMjLGXCizbFQGUMPxMibB6S3GHM+BqyglPXi9bd57M6jfF1h+2VlOv8/7RJ+xryHLOcLENm5rSka+MBEfSXGrIiPMx0aVwWOBtCPylQfx0WY9lyyDx/kirDCqpCCVIkXXxw0gNAri8W7yxPYsQiK1dK/e8H5nYHEMHY2/3USi9aUTzB4/pjWZ7OKmh4xCf0cv/CjbH9xO20aVp4OqdAg35fnxic/Xx8ZjvaHnPBQJqz9t4CoBf5ahhwCUU5PUzflEJBsbNbIZSQ2L/G6bjyuaJbjAecOSsNg6E/i7YPwR7r6PINNlt9v8q0nhshb9v5Mgju88ysUHMSFnHMhca8M4aHt4NrdKV8csjhFiEe7UhjYUaSVgjAdEl7qG02gCN9hW3U6aRwM0l3496zJOXvpc2iK0HhfXsB/L4CQcH9MnN8+Kc4Kb5zJGWpgs94OQuWJ8FJCshDg5OI6jfSxeFQXoGvFs7k4RiBTzqcUYuW5g6ZnDv8QIFox+V52lRmmxK4MyeyET2GPExns=
+        selected: false
+        status: Solved
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: ref_specification.md
+    visible: true
+    learner_created: false
+  - name: student_specification.md
+    visible: true
+    learner_created: false
+  - name: edtech.png
+    visible: false
+    is_binary: true
+    learner_created: false
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Mon, 01 Jun 2026 13:21:12 UTC"
+record: -1

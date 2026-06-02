@@ -1,0 +1,27 @@
+type: theory
+custom_name: Add Quizzes
+files:
+  - name: main.py
+    visible: true
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+  - name: templates/index.html
+    visible: true
+    learner_created: false
+  - name: static/js/main.js
+    visible: true
+    learner_created: false
+  - name: static/css/styles.css
+    visible: true
+    learner_created: false
+status: Unchecked
+record: -1
+post_submission_on_open: true

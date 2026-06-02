@@ -1,0 +1,5 @@
+content:
+  - CreateModules
+  - AddModules
+  - QuizzesGenerator
+  - AddQuizzes

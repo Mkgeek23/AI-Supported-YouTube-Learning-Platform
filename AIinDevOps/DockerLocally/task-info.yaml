@@ -1,0 +1,77 @@
+type: theory
+files:
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: Dockerfile
+    visible: true
+    learner_created: false
+  - name: docker-compose.yml
+    visible: true
+    learner_created: false
+  - name: src/static/js/main.js
+    visible: true
+    learner_created: false
+  - name: src/static/css/styles.css
+    visible: true
+    learner_created: false
+  - name: src/templates/index.html
+    visible: true
+    learner_created: false
+  - name: src/main.py
+    visible: true
+    learner_created: false
+  - name: src/__init__.py
+    visible: true
+    learner_created: false
+  - name: src/transcriber.py
+    visible: true
+    learner_created: false
+  - name: src/modules.py
+    visible: true
+    learner_created: false
+  - name: src/quizzes.py
+    visible: true
+    learner_created: false
+  - name: src/test_transcriber_junie.py
+    visible: true
+    learner_created: false
+  - name: src/test_modules_junie.py
+    visible: true
+    learner_created: false
+  - name: src/test_quizzes_junie.py
+    visible: true
+    learner_created: false
+  - name: src/test_main_junie.py
+    visible: true
+    learner_created: false
+  - name: src/test_integration_junie.py
+    visible: true
+    learner_created: false
+  - name: src/test_e2e_junie.py
+    visible: true
+    learner_created: false
+  - name: src/data/quizes.db
+    visible: true
+    is_binary: true
+    learner_created: false
+  - name: src/data/transcriptions.db
+    visible: true
+    is_binary: true
+    learner_created: false
+  - name: src/data/modules.db
+    visible: true
+    is_binary: true
+    learner_created: false
+  - name: requirements.txt
+    visible: true
+    learner_created: false
+  - name: DockerBuildAndRun.sh
+    visible: true
+    learner_created: false
+  - name: .dockerignore
+    visible: true
+    learner_created: false
+status: Unchecked
+record: -1
+post_submission_on_open: true

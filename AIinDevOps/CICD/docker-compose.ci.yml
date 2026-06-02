@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    image: youtube-learning-platform:${COMMIT_SHA:-latest}
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    restart: unless-stopped

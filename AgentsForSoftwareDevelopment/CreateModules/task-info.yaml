@@ -1,0 +1,38 @@
+type: edu
+custom_name: Create Modules
+files:
+  - name: task.py
+    visible: true
+    placeholders:
+      - offset: 3411
+        length: 52
+        placeholder_text: "None # TODO: call the generate_module_title function"
+        initial_state:
+          length: 52
+          offset: 3411
+        initialized_from_dependency: false
+        encrypted_possible_answer: H7mcBQQ7+WMVyQFDUllj+h3KQOWZiiUMd4TVF/IA3o0Lz2BrmxlfpNs3AsrY+mByP8KT5/5h17j4DJM2qg0XYQ==
+        selected: false
+        status: Unchecked
+      - offset: 3919
+        length: 52
+        placeholder_text: "None # TODO: call the generate_module_title function"
+        initial_state:
+          length: 52
+          offset: 3919
+        initialized_from_dependency: false
+        encrypted_possible_answer: H7mcBQQ7+WMVyQFDUllj+h3KQOWZiiUMd4TVF/IA3o0Lz2BrmxlfpNs3AsrY+mByP8KT5/5h17j4DJM2qg0XYQ==
+        selected: false
+        status: Unchecked
+    learner_created: false
+  - name: tests/test_task.py
+    visible: false
+    learner_created: false
+  - name: __init__.py
+    visible: false
+    learner_created: false
+  - name: tests/__init__.py
+    visible: false
+    learner_created: false
+status: Unchecked
+record: -1
