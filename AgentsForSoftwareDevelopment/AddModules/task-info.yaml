@@ -4,16 +4,16 @@ files:
   - name: task.py
     visible: true
     placeholders:
-      - offset: 631
-        length: 47
+      - offset: 621
+        length: 57
         placeholder_text: "None # TODO: call structure_transcript function"
         initial_state:
           length: 47
           offset: 631
         initialized_from_dependency: false
         encrypted_possible_answer: rKtfdPXgR5+xP9ZrA9qvJvR5fjsAXPtjn8sjX0uDA455DcHB20XlKn+x2NGONjX0
-        selected: false
-        status: Unchecked
+        selected: true
+        status: Solved
     learner_created: false
   - name: tests/test_task.py
     visible: false
@@ -33,5 +33,8 @@ files:
   - name: static/js/main.js
     visible: true
     learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Tue, 02 Jun 2026 09:11:56 UTC"
 record: -1

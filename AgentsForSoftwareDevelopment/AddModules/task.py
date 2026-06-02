@@ -16,7 +16,7 @@ def modules():
             return jsonify(error="Video ID is required"), 400
 
         video_transcript = transcribe_youtube_video(f'https://www.youtube.com/watch?v={video_id}')
-        modules = None # TODO: call structure_transcript function
+        modules = structure_transcript(video_transcript)
         return jsonify(modules=modules)
 
     except Exception as e:

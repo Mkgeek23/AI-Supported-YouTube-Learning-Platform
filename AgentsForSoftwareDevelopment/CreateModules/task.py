@@ -120,7 +120,7 @@ def structure_transcript(video: Dict) -> List[Dict]:
         else:
             # Finalize current module
             current_module['end_time'] = current_module['content'][-1]['end']
-            current_module['title'] = None # TODO: call the generate_module_title function
+            current_module['title'] = generate_module_title(current_module['content'])
             modules.append(current_module.copy())
 
             # Start new module
@@ -134,7 +134,7 @@ def structure_transcript(video: Dict) -> List[Dict]:
     # Add the last module if it has content
     if current_module['content']:
         current_module['end_time'] = current_module['content'][-1]['end']
-        current_module['title'] = None # TODO: call the generate_module_title function
+        current_module['title'] = generate_module_title(current_module['content'])
         modules.append(current_module)
 
     # Save to cache

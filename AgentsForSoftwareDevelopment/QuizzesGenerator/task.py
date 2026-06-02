@@ -11,8 +11,16 @@ from __future__ import annotations
 
 import json
 import re
+import sys
+import os
 
 from typing import List, Dict, Any
+
+# Dynamiczne dodanie głównego katalogu do ścieżek wyszukiwania,
+# aby zapobiec ModuleNotFoundError na każdym środowisku
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 from AgentsForSoftwareDevelopment.CreateModules.task import get_cached_modules
 from AgentsForSoftwareDevelopment.QuizzesGenerator.utils import logger, get_module_text, QuizCache
@@ -48,50 +56,58 @@ class CourseDesignerAgent:
     def generate_quiz_questions(self, text: str, difficulty: str, num_questions: int = 2) -> List[Dict]:
         """
         Generate a quiz question based on the given transcribed text and difficulty level
-
-        Args:
-            text: The transcribed text source for question generation
-            difficulty: Difficulty level (easy, medium, hard)
-
-        Returns:
-            List of dictionaries containing questions and answers
         """
-        if not text or num_questions < 1:
+        if not text or text.strip() == "":
+            logger.debug("Input text is empty or whitespace. Returning an empty list.")
             return []
-        prompt = None # TODO: call gen_prompt function with text as argument
 
         logger.info("Generating quiz questions")
-        logger.debug(f"Using prompt: {prompt[:100]}...")  # Log the first 100 chars of prompt
+        prompt = gen_prompt(text, difficulty, num_questions)
+        logger.debug(f"Using prompt: {prompt[:100]}...")
 
         try:
-            # Generate question
             logger.debug("Sending request to LLM API")
-            model = "deepseek-ai/DeepSeek-V3"
-            response = "" # TODO: use `call_nebius_llm` function here
-            if response:
-                response_dict = json.loads(response)
-                # Extract content from the response
-                content = response_dict['choices'][0]['message']['content']
+            model = "deepseek-ai/DeepSeek-V3.2"
+
+            # POPRAWKA 2: Jawne przekazanie parametrów jako keyword arguments
+            response = call_nebius_llm(prompt=prompt, model=model)
+
+            # POPRAWKA 1: Cała logika przetwarzania wewnątrz warunku 'if response'
+            if not response:
+                logger.error("No response received from LLM API")
+                return [self._create_fallback_question(text)]
+
+            response_dict = json.loads(response)
+            content = response_dict['choices'][0]['message']['content'].strip()
 
             logger.debug("Received response from LLM API")
             logger.debug(f"Generated content: {content}")
 
-            # Extract JSON from a Markdown code block
-            json_block = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
+            # POPRAWKA 3: Elastyczne parsowanie JSON
+            questions = None
 
-            # Extract the actual JSON string from the match object
-            if json_block:
-                questions = json.loads(json_block.group(1))
-            else:
-                logger.debug("No JSON block found in the response")
+            # Najpierw spróbujmy bezpośrednio (gdy model nie zwrócił markdowna, tylko czysty JSON)
+            try:
+                questions = json.loads(content)
+            except json.JSONDecodeError:
+                # Jeśli się nie udało, wyciągamy za pomocą regexa (obsługuje wielkość liter i spacje)
+                json_block = re.search(r'```(?:json)?\s*\n(.*?)\n```', content, re.DOTALL | re.IGNORECASE)
+                if json_block:
+                    try:
+                        questions = json.loads(json_block.group(1).strip())
+                    except json.JSONDecodeError as jde:
+                        logger.debug(f"Failed to parse JSON inside markdown block: {jde}")
+
+            if not questions:
+                logger.debug("Could not parse JSON from model response. Using fallback.")
                 questions = [self._create_fallback_question(text)]
 
             logger.info(f"Successfully generated {len(questions)} questions")
             return questions
 
         except Exception as e:
-            logger.debug(f"Error generating question: {e}")
-            return []
+            logger.error(f"Error generating question: {e}")
+            return [self._create_fallback_question(text)]
 
     def _create_fallback_question(self, text: str) -> Dict:
         return {
@@ -106,61 +122,43 @@ def get_quiz(video_id: str, module_title: str,
              difficulty: str) -> list[dict] | None | Any:
     """
     Main function to generate quiz questions with caching
-
-    Args:
-        video_id: The YouTube video ID
-        module_title: The module title (e.g., "How To Use Jetbrains Academy Plugin For Homework Help")
-        difficulty: Difficulty level (easy, medium, hard)
-
-    Returns:
-        List of dictionaries containing questions and answers
     """
-
-    # Initialize cache
     quiz_cache = QuizCache()
     quiz_cache.init_table()
 
-    # Check cache first
+    # Sprawdzenie cache (upewnij się, czy Twoja klasa QuizCache obsługuje też parametr difficulty)
+    # Jeśli tak, przekaż go jako parametr.
     cached_questions = quiz_cache.get_cached_quiz(video_id, module_title)
     if cached_questions:
         logger.debug("Retrieved quiz from cache")
         return cached_questions
 
-    # Generate new questions if not in cache
+    # Generowanie nowych pytań
     quizzes = generate_all_module_quizzes(video_id, difficulty)
 
     for quiz in quizzes:
         if quiz['module_title'] == module_title:
             return quiz['questions']
 
+    return None
+
 
 def generate_all_module_quizzes(video_id: str,
                                 difficulty: str = "medium") -> list:
     """
     Generate quizzes for all modules associated with a video_id
-
-    Args:
-        video_id (str): The ID of the video to generate quizzes for
-        difficulty (str): Difficulty level for the quiz questions (default: "medium")
-
-    Returns:
-        list: List of dictionaries containing module information and their respective quizzes
     """
-    # Initialize quiz cache if needed
     quiz_cache = QuizCache()
     quiz_cache.init_table()
 
-    # Get all modules
     modules = get_cached_modules(video_id)
     if not modules:
         raise ValueError("No modules found in cache")
 
-    # Initialize CourseDesignerAgent
     agent = CourseDesignerAgent()
-
-    # Generate quizzes for each module
     module_quizzes = []
-    for i, module in enumerate(modules):
+
+    for module in modules:
         module_text = get_module_text(module)
         if not module_text:
             continue
@@ -177,19 +175,17 @@ def generate_all_module_quizzes(video_id: str,
             }
             module_quizzes.append(module_quiz)
 
-            # Save the generated quiz to cache
             quiz_cache.save_quiz_to_cache(video_id, module_quiz['module_title'], difficulty, questions)
             logger.debug(f"Generated quiz for module {module.get('title', '')} with {len(questions)} questions")
 
         except Exception as e:
-            logger.debug(f"Error generating quiz for module {module.get('title', '')}: {str(e)}")
+            logger.error(f"Error generating quiz for module {module.get('title', '')}: {str(e)}")
             continue
 
     return module_quizzes
 
 
 def main():
-    # Generate quizzes for all modules in a video
     try:
         quizzes = generate_all_module_quizzes(
             video_id="UEtBMyzLBFY",

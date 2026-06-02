@@ -4,26 +4,26 @@ files:
   - name: task.py
     visible: true
     placeholders:
-      - offset: 1983
-        length: 59
+      - offset: 2049
+        length: 356
         placeholder_text: "None # TODO: call gen_prompt function with text as argument"
         initial_state:
           length: 59
           offset: 1983
         initialized_from_dependency: false
         encrypted_possible_answer: cNF1Jv7gu8WH/DR0X/urMmXvLnUEbrq26BC/EwOwG4wVkT+w6ouaUnZx6flcR9gW1yBIE/cWnvPMLyBhyc7m/086cROOI5PpbKbgZ7Mag8U=
-        selected: false
-        status: Unchecked
-      - offset: 2357
-        length: 46
+        selected: true
+        status: Solved
+      - offset: 2551
+        length: 40
         placeholder_text: "\"\" # TODO: use `call_nebius_llm` function here"
         initial_state:
           length: 46
           offset: 2357
         initialized_from_dependency: false
         encrypted_possible_answer: zjkAljjTDq3jSGvhfhyNfwe4wNsdsR4uqJKC7WSt4ec=
-        selected: false
-        status: Unchecked
+        selected: true
+        status: Solved
     learner_created: false
   - name: tests/test_task.py
     visible: false
@@ -37,5 +37,8 @@ files:
   - name: utils.py
     visible: true
     learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Tue, 02 Jun 2026 09:25:14 UTC"
 record: -1
