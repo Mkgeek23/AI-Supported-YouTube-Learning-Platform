@@ -12,17 +12,17 @@ files:
   - name: task.py
     visible: true
     placeholders:
-      - offset: 384
-        length: 51
+      - offset: 357
+        length: 0
         placeholder_text: "None # TODO: call transcribe_youtube_video function"
         initial_state:
           length: 51
           offset: 384
         initialized_from_dependency: false
         encrypted_possible_answer: 74ZlazzcHRQUXNHJ0tJvMy0hLUpIBllDvaL+Wo9gchtTsHm2EziLHeD1OECTIw8d21Vp53Wa+8IGVofZmY4ejomRAKRY384QoEVtkKaBGHY=
-        selected: false
-        status: Unchecked
-      - offset: 569
+        selected: true
+        status: Solved
+      - offset: 476
         length: 49
         placeholder_text: "None # TODO: get transcript value for the webpage"
         initial_state:
@@ -31,7 +31,7 @@ files:
         initialized_from_dependency: false
         encrypted_possible_answer: COzpsFJuDf9miOi26pVnEympK6/cEr7I7i7lgYB0AnAQq/nOdJYX9GNVW6D+nxSU
         selected: false
-        status: Unchecked
+        status: Solved
     learner_created: false
   - name: templates/index.html
     visible: true
@@ -42,5 +42,8 @@ files:
   - name: static/css/styles.css
     visible: true
     learner_created: false
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Tue, 02 Jun 2026 09:06:11 UTC"
 record: -1

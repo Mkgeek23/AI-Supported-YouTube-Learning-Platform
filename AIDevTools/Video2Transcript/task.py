@@ -33,6 +33,12 @@ def init_database() -> None:
     """
     Initializes the SQLite database and creates the necessary table if it doesn't exist.
     """
+    # 1. Automatycznie utwórz foldery nadrzędne (np. common/data), jeśli nie istnieją
+    db_dir = os.path.dirname(Transcriptions_CACHE_DB)
+    if db_dir:
+        os.makedirs(db_dir, exist_ok=True)
+
+    # 2. Teraz SQLite bezpiecznie połączy się z bazą
     conn: sqlite3.Connection = sqlite3.connect(Transcriptions_CACHE_DB)
     cursor: sqlite3.Cursor = conn.cursor()
     cursor.execute('''
@@ -124,7 +130,8 @@ def transcribe_youtube_video(url: str) -> Optional[VideoInfo]:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info: Dict[str, Any] = ydl.extract_info(url, download=False)
 
-        raise Exception('Not implemented') # TODO: get video_id from the info.id
+
+        video_id: str = info['id']
 
         # Check if transcription exists in a database
         cached_result: Optional[VideoInfo] = get_transcription_from_db(video_id)
@@ -154,7 +161,7 @@ def transcribe_youtube_video(url: str) -> Optional[VideoInfo]:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-        raise Exception('Not implemented') # TODO: use the model to transcribe 'temp_audio.wav' file
+        result: Dict[str, Any] = model.transcribe('temp_audio.wav')
 
         video_info['transcript'] = result['segments']
 

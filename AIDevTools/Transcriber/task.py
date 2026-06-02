@@ -11,12 +11,12 @@ app.add_url_rule('/', 'index', index)
 def transcription():
     try:
         video_id = request.args.get('video_id', '')
-        video_transcript = None # TODO: call transcribe_youtube_video function
+        video_transcript = transcribe_youtube_video(video_id)
 
         if video_transcript is None:
             return jsonify(error="Failed to transcribe video"), 500
 
-        transcript_data = None # TODO: get transcript value for the webpage
+        transcript_data = video_transcript.get('transcript') if video_transcript else None
         if transcript_data is None:
             return jsonify(error="Invalid transcript format"), 500
 

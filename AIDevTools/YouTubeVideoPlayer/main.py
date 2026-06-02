@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     # Using a video that's publicly available
     # Default video ID and start time
-    default_video_id = "UEtBMyzLBFY"
+    default_video_id = "aAItDrJ8-rE"
     start_time = request.args.get('t', 0, type=int)
     return render_template('index.html', video_id=default_video_id, start_time=start_time)
 
